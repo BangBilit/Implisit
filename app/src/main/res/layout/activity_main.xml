@@ -25,5 +25,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnSetTimer"
         android:text="Set Timer" />
+    
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etURL"
+        android:hint="Masukan URL" />
+
+    <Button
+        android:id="@+id/btnOpenURL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buka Website" />
 
 </LinearLayout>
