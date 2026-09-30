@@ -33,9 +33,9 @@
         android:hint="Masukan URL" />
 
     <Button
-        android:id="@+id/btnOpenURL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/btnOpenURL"
         android:text="Buka Website" />
 
     <Button
@@ -43,6 +43,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnSetEvent"
         android:text="Set Event" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnGetPhoto"
+        android:text="Ambil Foto" />
+
+    <ImageView
+        android:id="@+id/ivHasil"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerInside" />
 
 
 </LinearLayout>

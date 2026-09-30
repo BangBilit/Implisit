@@ -9,8 +9,10 @@ import android.provider.AlarmClock
 import android.provider.CalendarContract
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -68,8 +70,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         _btnOpenURL.setOnClickListener {
-            var _webIntent = Intent(Intent.ACTION_VIEW,
-            Uri.parse("http://"+ _etURL.text.toString())
+            var _webIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://" + _etURL.text.toString())
             )
             if (intent.resolveActivity(packageManager) != null) {
                 startActivity(_webIntent)
@@ -91,15 +94,22 @@ class MainActivity : AppCompatActivity() {
             val hour = calendar.get(Calendar.HOUR_OF_DAY)
             val minute = calendar.get(Calendar.MINUTE)
 
-            val datePickerDialog = DatePickerDialog(this,
+            val datePickerDialog = DatePickerDialog(
+                this,
                 { _, selectedYear, selectedMonth, selectedDay ->
 
-                    val timePickerDialog = TimePickerDialog(this,
+                    val timePickerDialog = TimePickerDialog(
+                        this,
                         { _, selectedHour, selectedMinute ->
 
                             val selectedDateTime = Calendar.getInstance().apply {
                                 set(
-                                    selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute)
+                                    selectedYear,
+                                    selectedMonth,
+                                    selectedDay,
+                                    selectedHour,
+                                    selectedMinute
+                                )
                             }
                             val endTime = selectedDateTime.clone() as Calendar
                             endTime.add(Calendar.HOUR_OF_DAY, 1)
@@ -110,17 +120,39 @@ class MainActivity : AppCompatActivity() {
                                 putExtra(CalendarContract.Events.EVENT_LOCATION, "Kantor")
                                 putExtra(CalendarContract.Events.DESCRIPTION, "Deskripsi Meeting")
                                 putExtra(CalendarContract.Events.ALL_DAY, false)
-                                putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, selectedDateTime.timeInMillis)
-                                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.timeInMillis)
+                                putExtra(
+                                    CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                                    selectedDateTime.timeInMillis
+                                )
+                                putExtra(
+                                    CalendarContract.EXTRA_EVENT_END_TIME,
+                                    endTime.timeInMillis
+                                )
                             }
                             startActivity(eventIntent)
 
-                        }, hour, minute, true)
+                        }, hour, minute, true
+                    )
                     timePickerDialog.show()
 
-                }, year, month, day)
+                }, year, month, day
+            )
             datePickerDialog.show()
         }
 
+        val _btnGetPhoto = findViewById<Button>(R.id.btnGetPhoto)
+        val _ivHasil = findViewById<ImageView>(R.id.ivHasil)
+
+        val cameraLauncher = registerForActivityResult(
+            ActivityResultContracts.TakePicturePreview()
+        ) { bitmap ->
+            if (bitmap != null) {
+                _ivHasil.setImageBitmap(bitmap)
+            }
+        }
+
+        _btnGetPhoto.setOnClickListener {
+            cameraLauncher.launch(null)
+        }
     }
 }
